@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { toast } from 'sonner';
 import {
   Plus, Search, Trash2, Pencil, Eye, Phone, Star,
   ChevronLeft, ChevronRight, Users, GraduationCap, TrendingUp, Award,
@@ -66,8 +67,10 @@ export default function OqituvchilarPage() {
     const newData = { ...form, photo: photoPreview };
     if (editItem) {
       setTeachers(p => p.map(t => t.id === editItem.id ? { ...t, ...newData } : t));
+      toast.success("O'qituvchi yangilandi!", { description: newData.name });
     } else {
       setTeachers(p => [...p, { id: Date.now(), ...newData, groups: 0, students: 0, rating: 5.0, coin: 0, joined: new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }) }]);
+      toast.success("O'qituvchi qo'shildi!", { description: newData.name });
     }
     setPanelOpen(false);
   }
@@ -78,6 +81,12 @@ export default function OqituvchilarPage() {
     const reader = new FileReader();
     reader.onload = ev => setPhotoPreview(ev.target.result);
     reader.readAsDataURL(file);
+  }
+
+  function handleDelete(id) {
+    const teacher = teachers.find(t => t.id === id);
+    setTeachers(p => p.filter(t => t.id !== id));
+    toast.error("O'qituvchi o'chirildi", { description: teacher?.name });
   }
 
   const f = k => ({ value: form[k], onChange: e => setForm(p => ({ ...p, [k]: e.target.value })) });

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Toaster } from 'sonner';
 import Sidebar from '../components/layout/Sidebar';
 import Header from '../components/layout/Header';
 import AsosiyContent from '../components/asosiy/AsosiyContent';
@@ -50,6 +51,9 @@ export default function DashboardPage() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
+      {/* Global toast notifications */}
+      <Toaster position="top-right" richColors closeButton />
+
       {/* Sidebar — handles sub-sidebar internally */}
       <Sidebar
         activeNav={activeNav}

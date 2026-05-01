@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { RefreshCw, Plus, Trash2, Pencil } from 'lucide-react';
 import RightPanel from '../layout/RightPanel';
 
@@ -32,7 +33,9 @@ export default function XonalarPage() {
   }
 
   function handleDelete(id) {
+    const xona = rooms.find(r => r.id === id);
     setRooms((prev) => prev.filter((r) => r.id !== id));
+    toast.error("Xona o'chirildi", { description: xona?.name });
   }
 
   function handleSubmit(e) {
@@ -45,11 +48,13 @@ export default function XonalarPage() {
             : r
         )
       );
+      toast.success('Xona yangilandi!', { description: formData.name });
     } else {
       setRooms((prev) => [
         ...prev,
         { id: Date.now(), name: formData.name, capacity: Number(formData.capacity) },
       ]);
+      toast.success("Xona qo'shildi!", { description: formData.name });
     }
     setIsPanelOpen(false);
   }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Plus, RefreshCw, Trash2, Pencil, Clock, Calendar, Wallet, BookOpen } from 'lucide-react';
 import RightPanel from '../layout/RightPanel';
 
@@ -45,7 +46,9 @@ export default function KurslarPage() {
   }
 
   function handleDelete(id) {
+    const kurs = courses.find(c => c.id === id);
     setCourses((prev) => prev.filter((c) => c.id !== id));
+    toast.error("Kurs o'chirildi", { description: kurs?.name });
   }
 
   function handleSubmit(e) {
@@ -58,11 +61,13 @@ export default function KurslarPage() {
             : c
         )
       );
+      toast.success('Kurs yangilandi!', { description: form.name });
     } else {
       setCourses((prev) => [
         ...prev,
         { id: Date.now(), ...form, lessons: Number(form.lessons) },
       ]);
+      toast.success("Kurs qo'shildi!", { description: form.name });
     }
     setPanelOpen(false);
   }
